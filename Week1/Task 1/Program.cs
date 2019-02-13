@@ -22,15 +22,17 @@ namespace weeek1
 
         static void Main(string[] args)
         {
-            string ss = Console.ReadLine();//ввожу как cin символ
-            int n = int.Parse(ss);// меняю на цифру
+            string d = Console.ReadLine();//ввожу как cin символ
+            int n = int.Parse(d);// меняю на цифру
 
             int[] a = new int[n];//создаю массив 
+            string s= Console.ReadLine();
+            string [] ss= s.Split();
             int cnt = 0; // создаю счетчик который предназначен на количество простых чисел
             for (int i = 0; i < n; ++i)
             {
-                int b = Convert.ToInt32(Console.ReadLine());
-                a[i] = b;
+               
+                a[i] = int.Parse(ss[i]);
 
             }
             for (int i = 0; i < n; ++i)
