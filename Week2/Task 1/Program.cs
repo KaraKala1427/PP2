@@ -9,64 +9,34 @@ namespace Example2
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Solve(string str)
         {
-            F4();
-        }
-
-
-        private static void PrintInfo(FileSystemInfo[] x, ConsoleColor c)
-        {
-            Console.ForegroundColor = c;
-            foreach (var t in x)
+            bool ok = true;
+            for (int i = 0; i < str.Length; ++i)
             {
-                Console.WriteLine(t.Name);
-            }
-        }
-
-        private static void F4()
-        {
-            DirectoryInfo dirInfo = new DirectoryInfo(@"C:\test");
-            PrintInfo(dirInfo.GetDirectories(), ConsoleColor.White);
-            PrintInfo(dirInfo.GetFiles(), ConsoleColor.Yellow);
-        }
-
-        private static void F3()
-        {
-            DirectoryInfo dirInfo = new DirectoryInfo(@"C:\test");
-            var x = dirInfo.GetFileSystemInfos();
-            foreach (var t in x)
-            {
-                if (t.GetType() == typeof(DirectoryInfo))
+                if (str[i] != str[str.Length - 1 - i])
                 {
-                    Console.ForegroundColor = ConsoleColor.White;
+                    ok = false; break;
                 }
-                else
-                {
-                    Console.ForegroundColor = ConsoleColor.Green;
-                }
-                Console.WriteLine(t.Name);
+
+            }
+            if (ok)
+            {
+                Console.WriteLine("Yes");
+            }
+            else
+            {
+                Console.WriteLine("No");
             }
         }
-
-        private static void F2()
-        {
-            DirectoryInfo dirInfo = new DirectoryInfo(@"C:\test");
-            var x = dirInfo.GetFileSystemInfos();
-            foreach (var t in x)
-            {
-                Console.WriteLine(t.Name);
-            }
-        }
-
-        private static void F1()
-        {
-            DirectoryInfo dirInfo = new DirectoryInfo(@"C:\test");
-            FileSystemInfo[] x = dirInfo.GetFileSystemInfos();
-            for (int i = 0; i < x.Length; ++i)
-            {
-                Console.WriteLine(x[i].Name);
-            }
+        static void Main(string[] args) {
+            FileStream fs = new FileStream(@"C:\test\php.txt", FileMode.Open, FileAccess.Read);
+            StreamReader sr = new StreamReader(fs);
+            string line = sr.ReadLine();
+            Solve(line);
+            sr.Close();
+            fs.Close();
+       
         }
     }
 }
