@@ -138,7 +138,46 @@ namespace Example3
 
                 }
 
+                else if (pressedKey.Key == ConsoleKey.Delete)
+                {
+                    int x2 = history.Peek().SelectedItemIndex;
+                    FileSystemInfo fileSystemInfo2 = history.Peek().Items[x2];
+                    if (fileSystemInfo2.GetType() == typeof(DirectoryInfo))
+                    {
+                        DirectoryInfo d = fileSystemInfo2 as DirectoryInfo;
+                        Directory.Delete(fileSystemInfo2.FullName, true);
+                        history.Peek().Items = d.Parent.GetFileSystemInfos();
+                    }
+                    else
+                    {
+                        FileInfo f = fileSystemInfo2 as FileInfo;
+                        File.Delete(fileSystemInfo2.FullName);
+                        history.Peek().Items = f.Directory.GetFileSystemInfos();
+                    }
+                    history.Peek().SelectedItemIndex--;
 
+                }
+
+                else if(pressedKey.Key == ConsoleKey.F6)
+                {
+                    Console.BackgroundColor = ConsoleColor.Black;
+                    Console.Clear();
+                    string name = Console.ReadLine();
+                    int x3 = history.Peek().SelectedItemIndex;
+                    FileSystemInfo fileSystemInfo3 = history.Peek().Items[x3];
+                    if (fileSystemInfo3.GetType() == typeof(DirectoryInfo))
+                    {
+                        DirectoryInfo directoryInfo = fileSystemInfo3 as DirectoryInfo;
+                        Directory.Move(fileSystemInfo3.FullName, directoryInfo.Parent + "/" + name);
+                        history.Peek().Items = directoryInfo.Parent.GetFileSystemInfos();
+                    }
+                    else
+                    {
+                        FileInfo fileInfo = fileSystemInfo3 as FileInfo;
+                        File.Move(fileSystemInfo3.FullName, fileInfo.Directory.FullName + "/" + name);
+                        history.Peek().Items = fileInfo.Directory.GetFileSystemInfos();
+                    }
+                }
                 else if (pressedKey.Key == ConsoleKey.Backspace)
                 {
                     if (curMode == FSIMode.DirectoryInfo)
