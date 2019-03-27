@@ -10,19 +10,13 @@ namespace Task_4
     {
         static void Main(string[] args)
         {
-            string s = Console.ReadLine();
-            int n = int.Parse(s);
-            for (int i = 1; i <= n; ++i)
-            {
-                for (int j = 1; j <= i; ++j)
-                {
-                    Console.Write("[*]");
-
-                }
-                Console.WriteLine();
+            string n = Console.ReadLine();
+            int a = int.Parse(n);
+            for(int i = 0; i < a; ++i)
+            {  
+                for(int j=1;j<=i)
 
             }
-
         }
     }
 }

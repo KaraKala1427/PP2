@@ -8,6 +8,14 @@ namespace task3
 {
     class Program
     {
+        public static void Duble(int x)
+        {
+
+            for (int j = 0; j < 2; ++j)//it is for repeating each element of the array
+            {
+                Console.Write(x + " ");//presenting the repeated elements that i need
+            }
+        }
         static void Main(string[] args)
         {
             string s = Console.ReadLine();//inputting the symbol, which will be size of array
@@ -21,10 +29,8 @@ namespace task3
             }
             for (int i = 0; i < n; ++i)
             {
-                for (int j = 0; j < 2; ++j)//it is for repeating each element of the array
-                {
-                    Console.Write(a[i] + " ");//presenting the repeated elements that i need
-                }
+                Duble(a[i]);
+                
             }
         }
     }

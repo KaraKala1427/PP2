@@ -7,6 +7,11 @@ using System.Threading.Tasks;
 
 namespace Example3
 {
+    enum FSIMode
+    {
+        DirectoryInfo = 1,
+        File = 2
+    }
     class Layer
     {
         int selectedItemIndex;
@@ -39,11 +44,7 @@ namespace Example3
             }
         }
 
-        public Layer(FileSystemInfo[] items)
-        {
-            selectedItemIndex = 0;
-            this.Items = items;
-        }
+        
         public void Draw()
         {
             Console.BackgroundColor = ConsoleColor.Black;
@@ -57,8 +58,16 @@ namespace Example3
                 else
                 {
                     Console.BackgroundColor = ConsoleColor.Black;
+                    if(Items[i].GetType()==typeof(DirectoryInfo))
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                    }
                 }
-                Console.WriteLine(Items[i].Name);
+                Console.WriteLine((i+1)+". "+Items[i].Name);
             }
         }
     }
@@ -67,17 +76,24 @@ namespace Example3
     {
         static void Main(string[] args)
         {
-            DirectoryInfo dirInfo = new DirectoryInfo(@"C:\test");
+            DirectoryInfo dir = new DirectoryInfo(@"C:\test");
+            Layer l = new Layer{
+                Items = dir.GetFileSystemInfos(),
+                SelectedItemIndex = 0
+            };
 
-
+            FSIMode curMode = FSIMode.DirectoryInfo;
             Stack<Layer> history = new Stack<Layer>();
 
-            history.Push(new Layer(dirInfo.GetFileSystemInfos()));
+            history.Push(l);
 
             bool quit = false;
             while (!quit)
             {
-                history.Peek().Draw();
+                if (curMode == FSIMode.DirectoryInfo)
+                {
+                    history.Peek().Draw();
+                }
                 ConsoleKeyInfo pressedKey = Console.ReadKey();
                 if (pressedKey.Key == ConsoleKey.UpArrow)
                 {
@@ -89,13 +105,52 @@ namespace Example3
                 }
                 else if (pressedKey.Key == ConsoleKey.Enter)
                 {
-                    int x = history.Peek().SelectedItemIndex;
-                    DirectoryInfo y = history.Peek().Items[x] as DirectoryInfo;
-                    history.Push(new Layer(y.GetFileSystemInfos()));
+                    //int x = history.Peek().SelectedItemIndex;
+                    //DirectoryInfo y = history.Peek().Items[x] as DirectoryInfo;
+                    //history.Push(new Layer(y.GetFileSystemInfos()));
+                    int index = history.Peek().SelectedItemIndex;
+                    FileSystemInfo fsi = history.Peek().Items[index];
+                    if (fsi.GetType() == typeof(DirectoryInfo))
+                    {
+                        curMode = FSIMode.DirectoryInfo;
+                        // DirectoryInfo d = (DirectoryInfo)fsi;
+                        DirectoryInfo d = fsi as DirectoryInfo;
+                        history.Push(new Layer
+                        {
+                            Items = d.GetFileSystemInfos(),
+                            SelectedItemIndex = 0
+                        });
+                    }
+                    else
+                    {
+                        curMode = FSIMode.File;
+                        using (FileStream fs = new FileStream(fsi.FullName, FileMode.Open, FileAccess.Read))
+                        {
+                            using (StreamReader sr = new StreamReader(fs))
+                            {
+                                Console.BackgroundColor = ConsoleColor.White;
+                                Console.ForegroundColor = ConsoleColor.Black;
+                                Console.Clear();
+                                Console.WriteLine(sr.ReadToEnd());
+                            }
+                        }
+                    }
+
+
                 }
+
+
                 else if (pressedKey.Key == ConsoleKey.Backspace)
                 {
-                    history.Pop();
+                    if (curMode == FSIMode.DirectoryInfo)
+                    {
+                        history.Pop();
+                    }
+                    else
+                    {
+                        curMode = FSIMode.DirectoryInfo;
+                        Console.ForegroundColor = ConsoleColor.White;
+                    }
                 }
                 else if (pressedKey.Key == ConsoleKey.Escape)
                 {

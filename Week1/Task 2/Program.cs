@@ -20,8 +20,9 @@ namespace Task_2
         }
         public void PrintInfo()
         {
-            Console.WriteLine("Name of the student: "+name);  //method that outputs the data of student
-            Console.WriteLine("Id of the student: "+id);
+            Console.WriteLine(name+ "  " +id+"  " + 1);  //method that outputs the data of student
+            Console.WriteLine(name + "  " + id + "  " + 2);
+
         }
         public int Incremented(int a)    //method that increment year of student
         {
@@ -38,14 +39,12 @@ namespace Task_2
             string name = Console.ReadLine();
             Console.Write("Enter your id: ");        //inputting the data of student
             string id = Console.ReadLine();
-            Console.Write("Enter year of study: ");
-            string year = Console.ReadLine();
-            int number = int.Parse(year);
+           
+            //string year = Console.ReadLine();
+            //int number = int.Parse(year);
             Student student = new Student(name,id);   //constructor
-            Console.WriteLine("incremented year of the student: "+student.Incremented(number));
+            //Console.WriteLine("incremented year of the student: "+student.Incremented(number));
             
-
-
           
         }
     }

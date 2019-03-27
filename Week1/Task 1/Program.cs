@@ -51,7 +51,7 @@ namespace weeek1
                     Console.Write(a[i] + " ");
                 }
             }
-
+ 
 
         }
     }

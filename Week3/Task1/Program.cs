@@ -53,14 +53,14 @@ namespace Example3
             {
                 if (i == selectedItemIndex)
                 {
-                    Console.BackgroundColor = ConsoleColor.Blue;
+                    Console.BackgroundColor = ConsoleColor.Red;
                 }
                 else
                 {                                                        //function that control the color of files and directories
                     Console.BackgroundColor = ConsoleColor.Black;
                     if (Items[i].GetType() == typeof(DirectoryInfo))
                     {
-                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.ForegroundColor = ConsoleColor.White;
                     }
                     else
                     {
@@ -77,10 +77,10 @@ namespace Example3
         static void Main(string[] args)
         {
             DirectoryInfo dir = new DirectoryInfo(@"C:\test");   //implying the path
-            Layer l = new Layer    
+            Layer l = new Layer
             {
                 Items = dir.GetFileSystemInfos(),            //making exemplar whose argument is Items and SelectedItemIndex
-                SelectedItemIndex = 0              
+                SelectedItemIndex = 0
             };
 
             FSIMode curMode = FSIMode.DirectoryInfo;        //making variable curMode whose тип данные FSIMode
@@ -106,12 +106,12 @@ namespace Example3
                 }
                 else if (pressedKey.Key == ConsoleKey.Enter)
                 {
-                    
+
                     int index = history.Peek().SelectedItemIndex;
                     FileSystemInfo fsi = history.Peek().Items[index];
                     if (fsi.GetType() == typeof(DirectoryInfo))
                     {
-                        curMode = FSIMode.DirectoryInfo;                            
+                        curMode = FSIMode.DirectoryInfo;
                         // DirectoryInfo d = (DirectoryInfo)fsi;
                         DirectoryInfo d = fsi as DirectoryInfo;                      //if it is directory, showing content
                         history.Push(new Layer
@@ -137,7 +137,6 @@ namespace Example3
 
 
                 }
-
                 else if (pressedKey.Key == ConsoleKey.Delete)
                 {
                     int x2 = history.Peek().SelectedItemIndex;
@@ -157,8 +156,7 @@ namespace Example3
                     history.Peek().SelectedItemIndex--;
 
                 }
-
-                else if(pressedKey.Key == ConsoleKey.F6)
+                else if (pressedKey.Key == ConsoleKey.F6)
                 {
                     Console.BackgroundColor = ConsoleColor.Black;
                     Console.Clear();
@@ -198,3 +196,23 @@ namespace Example3
         }
     }
 }
+
+//                else if (pressedKey.Key == ConsoleKey.Delete)
+//                {
+//                    int x2 = history.Peek().SelectedItemIndex;
+//FileSystemInfo fileSystemInfo2 = history.Peek().Items[x2];
+//                    if (fileSystemInfo2.GetType() == typeof(DirectoryInfo))
+//                    {
+//                        DirectoryInfo d = fileSystemInfo2 as DirectoryInfo;
+//Directory.Delete(fileSystemInfo2.FullName, true);
+//                        history.Peek().Items = d.Parent.GetFileSystemInfos();
+//                    }
+//                    else
+//                    {
+//                        FileInfo f = fileSystemInfo2 as FileInfo;
+//File.Delete(fileSystemInfo2.FullName);
+//                        history.Peek().Items = f.Directory.GetFileSystemInfos();
+//                    }
+//                    history.Peek().SelectedItemIndex--;
+
+//                }
